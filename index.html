@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Shorts Factory · Ключи</title>
+<style>
+  :root { --bg:#121317; --panel:#1a1b20; --panel2:#212329; --line:#2c2e36; --text:#e7e8ec; --dim:#a6a9b4; --mute:#6e7280; --accent:#7c5cff; --ok:#3ecf8e; --bad:#f2617a; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 'Segoe UI', system-ui, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 16px 60px; }
+  header { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .mark { width:34px; height:34px; border-radius:9px; background:var(--accent); display:grid; place-items:center; font-weight:800; }
+  h1 { margin:0; font-size:18px; } h2 { margin:0; font-size:15px; } .sp { flex:1; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:16px; }
+  label.f { display:block; margin:12px 0 5px; color:var(--mute); font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+  input[type=text], input[type=password], input[type=number] { width:100%; padding:9px 11px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--text); font:inherit; outline:none; }
+  input:focus { border-color:var(--accent); }
+  .mono { font-family: ui-monospace, Consolas, monospace; letter-spacing:.05em; }
+  .row { display:grid; grid-template-columns: 1.4fr 1fr 150px; gap:12px; }
+  @media (max-width:700px) { .row { grid-template-columns: 1fr; } }
+  button { font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--panel2); color:var(--text); border-radius:8px; padding:8px 14px; }
+  button:hover { border-color:#3a3d48; } button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+  button:disabled { opacity:.45; cursor:default; }
+  .check { display:flex; align-items:center; gap:8px; margin-top:12px; color:var(--dim); font-size:13px; }
+  .msg { margin-top:10px; min-height:18px; font-size:13px; } .bad { color:var(--bad); } .ok { color:var(--ok); } .dim { color:var(--mute); font-size:12.5px; }
+  .key { margin-top:14px; padding:12px; border:1px dashed var(--accent); border-radius:9px; background:var(--bg); word-break:break-all; font:12px ui-monospace, Consolas, monospace; user-select:all; }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; } th { text-align:left; color:var(--mute); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:6px 8px; }
+  td { padding:7px 8px; border-top:1px solid var(--line); vertical-align:top; } td.k { max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .empty { color:var(--mute); padding:10px 0; }
+  .hide { display:none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header><div class="mark">SF</div><h1>Shorts Factory · ключи</h1><div class="sp"></div><button id="lock" class="hide">Закрыть</button></header>
+
+  <section id="login" class="card" style="max-width:460px;margin:12vh auto 0">
+    <h2>Вход</h2>
+    <p class="dim">Пароль лежит у тебя в файле <b>license/ПАРОЛЬ-САЙТА-КЛЮЧЕЙ.txt</b>. Страница ничего не отправляет в интернет: ключи подписываются прямо в этом браузере.</p>
+    <label class="f" for="pw">Пароль</label>
+    <input id="pw" type="password" autocomplete="current-password" autofocus>
+    <div id="loginMsg" class="msg bad"></div>
+    <button id="loginBtn" class="primary" style="width:100%;margin-top:6px">Открыть</button>
+  </section>
+
+  <div id="app" class="hide">
+    <section class="card">
+      <div class="row">
+        <div><label class="f" for="device">Код компьютера покупателя</label><input id="device" class="mono" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19" autocomplete="off" spellcheck="false"></div>
+        <div><label class="f" for="name">Имя покупателя</label><input id="name" type="text" maxlength="60" autocomplete="off"></div>
+        <div><label class="f" for="days">Дней (пусто = навсегда)</label><input id="days" type="number" min="1" max="3650" placeholder="∞"></div>
+      </div>
+      <label class="check"><input id="any" type="checkbox"> Ключ для любого компьютера (его можно раздать — только для своих)</label>
+      <div style="margin-top:14px"><button id="make" class="primary">Выдать ключ</button></div>
+      <div id="makeMsg" class="msg"></div>
+      <div id="result" class="hide">
+        <div id="keyText" class="key"></div>
+        <div style="margin-top:8px"><button id="copy">Скопировать ключ</button></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><h2>Выданные ключи</h2><div class="sp"></div><button id="export">Скачать CSV</button></div>
+      <p class="dim" style="margin:0 0 10px">История хранится только в этом браузере на этом компьютере. Скачивай CSV время от времени — это твой список продаж.</p>
+      <input id="search" type="text" placeholder="Поиск по имени или коду…" style="margin-bottom:10px">
+      <div id="history"></div>
+    </section>
+  </div>
+</main>
+<script>
+'use strict';
+const $ = (id) => document.getElementById(id);
+const DEVICE_RE = /^[0-9A-HJKMNP-TV-Z]{4}(-[0-9A-HJKMNP-TV-Z]{4}){3}$/; // Crockford base32, like the app
+const HISTORY = 'sf_keys_history_v1';
+let signingKey = null; // CryptoKey, lives only in this tab's memory
+
+const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const b64u = (bytes) => btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// vault.json: the license private key, encrypted with AES-256-GCM under a key derived
+// from the password (PBKDF2-SHA256). Without the password it is useless.
+async function unlock(password) {
+  const vault = await (await fetch('vault.json', { cache: 'no-store' })).json();
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
+  const aes = await crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt: b64(vault.salt), iterations: vault.iterations },
+    base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  const pkcs8 = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(vault.iv) }, aes, b64(vault.data)); // throws on a wrong password
+  return crypto.subtle.importKey('pkcs8', pkcs8, { name: 'Ed25519' }, false, ['sign']);
+}
+
+async function login() {
+  const msg = $('loginMsg'); msg.textContent = ''; $('loginBtn').disabled = true; $('loginBtn').textContent = 'Проверка…';
+  try {
+    signingKey = await unlock($('pw').value);
+    $('pw').value = '';
+    $('login').classList.add('hide'); $('app').classList.remove('hide'); $('lock').classList.remove('hide');
+    render(); $('device').focus();
+  } catch (e) {
+    const unsupported = e && /Ed25519|Unrecognized|NotSupported/i.test(String(e.name) + String(e.message));
+    msg.textContent = unsupported ? 'Этот браузер не умеет подписывать ключи (нужен свежий Chrome, Edge или Firefox).' : 'Неверный пароль.';
+  } finally { $('loginBtn').disabled = false; $('loginBtn').textContent = 'Открыть'; }
+}
+$('loginBtn').onclick = login;
+$('pw').onkeydown = (e) => { if (e.key === 'Enter') login(); };
+$('lock').onclick = () => { signingKey = null; location.reload(); };
+
+$('device').oninput = (e) => {
+  const raw = e.target.value.toUpperCase().replace(/[^0-9A-Z]/g, '').slice(0, 16);
+  e.target.value = raw.match(/.{1,4}/g)?.join('-') || '';
+};
+$('any').onchange = (e) => { $('device').disabled = e.target.checked; };
+
+// SF1-<base64url(JSON)>.<base64url(Ed25519 signature)> — the format the app checks
+async function makeKey(device, name, days) {
+  const any = device === 'any';
+  const now = Date.now();
+  const payload = {
+    d: any ? '*' : device.replace(/-/g, ''),
+    n: name,
+    e: days > 0 ? Math.floor(now / 86400000) + days : 0,
+    i: new Date(now).toISOString().slice(0, 10)
+  };
+  const body = new TextEncoder().encode(JSON.stringify(payload));
+  const sig = await crypto.subtle.sign({ name: 'Ed25519' }, signingKey, body);
+  return `SF1-${b64u(body)}.${b64u(sig)}`;
+}
+
+$('make').onclick = async () => {
+  const msg = $('makeMsg'); msg.className = 'msg'; msg.textContent = ''; $('result').classList.add('hide');
+  const any = $('any').checked;
+  const device = any ? 'any' : $('device').value.trim().toUpperCase();
+  if (!any && !DEVICE_RE.test(device)) { msg.className = 'msg bad'; msg.textContent = 'Код компьютера — 16 символов: XXXX-XXXX-XXXX-XXXX (буквы I, L, O, U в нём не встречаются).'; return; }
+  const days = $('days').value ? Math.floor(Number($('days').value)) : 0;
+  if (days < 0 || days > 3650) { msg.className = 'msg bad'; msg.textContent = 'Срок — от 1 до 3650 дней.'; return; }
+  const name = $('name').value.replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, 60);
+  const key = await makeKey(device, name, days);
+  $('keyText').textContent = key; $('result').classList.remove('hide');
+  const rows = load(); rows.unshift({ date: new Date().toISOString().slice(0, 10), device: any ? 'ANY' : device, name, days, key }); save(rows);
+  msg.className = 'msg ok'; msg.textContent = 'Ключ готов. Скопируй и отправь покупателю.';
+  render();
+};
+$('copy').onclick = async () => { await navigator.clipboard.writeText($('keyText').textContent); $('copy').textContent = 'Скопировано ✓'; setTimeout(() => ($('copy').textContent = 'Скопировать ключ'), 1500); };
+
+function load() { try { return JSON.parse(localStorage.getItem(HISTORY) || '[]'); } catch { return []; } }
+function save(rows) { try { localStorage.setItem(HISTORY, JSON.stringify(rows.slice(0, 2000))); } catch { /* storage blocked */ } }
+function render() {
+  const q = $('search').value.trim().toLowerCase();
+  const list = load().filter((r) => !q || (r.name || '').toLowerCase().includes(q) || (r.device || '').toLowerCase().includes(q));
+  if (!list.length) { $('history').innerHTML = '<div class="empty">Пока пусто.</div>'; return; }
+  $('history').innerHTML = '<table><thead><tr><th>Дата</th><th>Покупатель</th><th>Код ПК</th><th>Срок</th><th>Ключ</th><th></th></tr></thead><tbody>' +
+    list.map((r, i) => `<tr><td>${esc(r.date)}</td><td>${esc(r.name || '—')}</td><td class="mono">${esc(r.device)}</td><td>${r.days ? r.days + ' дн.' : 'навсегда'}</td><td class="k mono" title="${esc(r.key)}">${esc(r.key.slice(0, 24))}…</td><td><button data-i="${i}">Копировать</button></td></tr>`).join('') + '</tbody></table>';
+  $('history').querySelectorAll('button[data-i]').forEach((b) => (b.onclick = async () => { await navigator.clipboard.writeText(list[b.dataset.i].key); b.textContent = '✓'; setTimeout(() => (b.textContent = 'Копировать'), 1200); }));
+}
+$('search').oninput = render;
+$('export').onclick = () => {
+  const rows = load();
+  const csv = 'date,device,name,days,key\n' + rows.map((r) => [r.date, r.device, `"${String(r.name || '').replace(/"/g, '""')}"`, r.days || 'forever', r.key].join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = `keys-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+};
+</script>
+</body>
+</html>
